@@ -7,23 +7,30 @@ use Symfony\Component\Console\Formatter\OutputFormatter;
 
 /**
  * Class to print using Symfony Console Color
+ *
  * @example Output::print("<fg=red>Text to print in red</>")
  */
 class Output
 {
-    /** Attribute with Symfony Output Console color */
-    private static $output;
+    /**
+     * Attribute with Symfony Output Console color
+     */
+    private static $_output;
 
-    /** Get the output (memoize) */
+    /**
+     * Get the output (memoize)
+     *
+     * @return string self::$_output
+     */
     public static function getOutput()
     {
-        if (!self::$output) {
+        if (!self::$_output) {
             $output = new ConsoleOutput();
             $output->setFormatter(new OutputFormatter(true));
-            self::$output = $output;
+            self::$_output = $output;
         }
 
-        return self::$output;
+        return self::$_output;
     }
 
     /**
@@ -31,6 +38,7 @@ class Output
      * Didn't return a string, print when this method is called
      *
      * @param string $message Indicates message with symfony color format
+     *
      * @return void
      */
     public static function print($message)

@@ -26,7 +26,9 @@ class QuitCommand extends \Dephpug\Command
 
     public function getDescription()
     {
-        return 'This command ask if you want to close the debugger. The request/script will continue when the debugger stop.';
+        return
+            'This command ask if you want to close the debugger. ' .
+            'The request/script will continue when the debugger stop.';
     }
 
     public function getAlias()

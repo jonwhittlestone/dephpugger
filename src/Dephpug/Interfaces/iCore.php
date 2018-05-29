@@ -7,6 +7,12 @@ namespace Dephpug\Interfaces;
  */
 interface iCore
 {
-    /** Set the current core as the same instance */
+    /**
+     * Set the current core as the same instance
+     *
+     * @param obj $core Object Core
+     *
+     * @return void
+     */
     public function setCore(&$core);
 }

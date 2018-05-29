@@ -14,7 +14,9 @@ class VerboseModeMessageParse extends MessageParse
 {
     /**
      * Ignore the xml and check if the config verboseMode is active
-     * @param string $xml
+     *
+     * @param string $xml Xml received from dbgp protocol
+     *
      * @return bool
      */
     public function match(string $xml)
@@ -37,6 +39,8 @@ class VerboseModeMessageParse extends MessageParse
     }
 
     /**
+     * Empty method to avoid error in super
+     *
      * @return void
      */
     public function exec()

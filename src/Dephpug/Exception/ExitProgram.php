@@ -4,7 +4,7 @@ namespace Dephpug\Exception;
 
 class ExitProgram extends \Exception
 {
-    private $statusMessage = [
+    private $_statusMessage = [
         0 => 'Unexpected error',
         99 => null,
     ];
@@ -27,11 +27,10 @@ class ExitProgram extends \Exception
     public function getStatusMessage()
     {
         $statusMessageError = '';
-        if (
-            isset($this->statusMessage[$this->code]) &&
-            $this->statusMessage[$this->code] != null
+        if (isset($this->_statusMessage[$this->code])
+            && $this->_statusMessage[$this->code] != null
         ) {
-            $statusMessageError = "{$this->statusMessage[$this->code]}";
+            $statusMessageError = "{$this->_statusMessage[$this->code]}";
         }
 
         return $statusMessageError;

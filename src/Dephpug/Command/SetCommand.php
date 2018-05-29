@@ -42,7 +42,10 @@ class SetCommand extends \Dephpug\Command
         $value = $this->match[2];
 
         if (!preg_match('/(verboseMode|lineOffset)/', $prop)) {
-            Output::print("The prop `{$prop}` does not exist. You can change only `verboseMode` and `lineOffset`.");
+            Output::print(
+                "The prop `{$prop}` does not exist. ",
+                'You can change only `verboseMode` and `lineOffset`.'
+            );
 
             return false;
         }

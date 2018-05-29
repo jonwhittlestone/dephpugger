@@ -15,6 +15,7 @@ class MessageParse
      * to make compatible with `simplexml_load_string`
      *
      * @param string $message String with xml from DBGP
+     *
      * @return string Format xml
      */
     public function formatMessage($message)
@@ -25,8 +26,16 @@ class MessageParse
         $message = preg_replace("/^\d+?(?=<)/", '', $message);
         // Remove strings that could change between runs.
         $message = preg_replace('/appid="[0-9]+"/', 'appid=""', $message);
-        $message = preg_replace('/engine version=".*?"/', 'engine version=""', $message);
-        $message = preg_replace('/protocol_version=".*?"/', 'protocol_version=""', $message);
+        $message = preg_replace(
+            '/engine version=".*?"/',
+            'engine version=""',
+            $message
+        );
+        $message = preg_replace(
+            '/protocol_version=".*?"/',
+            'protocol_version=""',
+            $message
+        );
         $message = preg_replace('/ idekey=".*?"/', '', $message);
         $message = preg_replace('/address="[0-9]+"/', 'address=""', $message);
 
@@ -37,6 +46,7 @@ class MessageParse
      * Method to get a xml and beautifier to print formated.
      *
      * @param string $xml String with xml format
+     *
      * @return string Indicates the same xml, but formatted
      */
     public function xmlBeautifier($xml)

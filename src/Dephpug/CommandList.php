@@ -8,12 +8,21 @@ namespace Dephpug;
  */
 class CommandList
 {
-    /** Reflection to get all commands */
+    /**
+     * Reflection to get all commands
+     */
     public $reflection;
 
-    /** Pointer to core instance */
+    /**
+     * Pointer to core instance
+     */
     public $core;
 
+    /**
+     * Constructor
+     *
+     * @param obj $core Dephpug's Core
+     */
     public function __construct(&$core)
     {
         $this->reflection = new PluginReflection($core);
@@ -24,15 +33,18 @@ class CommandList
      * Match all commands regexp and return the correct
      * command to match this one (sorted by level)
      *
-     * @param string $command
+     * @param string $command Command to test match
+     *
      * @return obj $plugin
      */
     public function match($command)
     {
         $plugins = $this->reflection->getPlugins();
-        usort($plugins, function ($a, $b) {
-            return $a->level > $b->level;
-        });
+        usort(
+            $plugins, function ($a, $b) {
+                return $a->level > $b->level;
+            }
+        );
 
         foreach ($plugins as $plugin) {
             if ($plugin->match($command)) {
@@ -43,7 +55,9 @@ class CommandList
 
     /**
      * Get the command and call the method exec();
-     * @param string $command
+     *
+     * @param string $command Command to run
+     *
      * @return void
      */
     public function run($command)
@@ -56,8 +70,11 @@ class CommandList
 
     /**
      * Run an especific method for a reflection passing parameters
+     *
      * @param string $methodName Indicates the name of the method to call
-     * @param array $params Indicates the parameters to send to method called
+     * @param array  $params     Indicates the parameters to send to method called
+     *
+     * @return void
      */
     public function runMethod($methodName, $params = [])
     {

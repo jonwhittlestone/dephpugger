@@ -9,7 +9,9 @@ use Symfony\Component\Console\Application;
  */
 class Dephpugger
 {
-    /** The version of the Dephpugger */
+    /**
+     * The version of the Dephpugger
+     */
     public static $VERSION = '1.2.2';
 
     protected $commands = [
@@ -20,6 +22,11 @@ class Dephpugger
         \Dephpug\Console\ServerCommand::class,
     ];
 
+    /**
+     * Run symfony console application
+     *
+     * @return any
+     */
     public function run()
     {
         $application = new Application();

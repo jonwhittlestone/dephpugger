@@ -10,8 +10,10 @@ use Symfony\Component\Yaml\Exception\ParseException;
  */
 class Config
 {
-    /** Default config that will be replaced by *.dephpugger.yml* file */
-    private $defaultConfig = [
+    /**
+     * Default config that will be replaced by *.dephpugger.yml* file
+     */
+    private $_defaultConfig = [
         'server' => [
             'port' => 8888,
             'host' => 'localhost',
@@ -27,29 +29,36 @@ class Config
         ],
     ];
 
-    /** Array with configurations */
-    private $config;
+    /**
+     * Array with configurations
+     */
+    private $_config;
 
     /**
      * Get the attribute config
+     *
      * @return array $config
      */
     public function getConfig()
     {
-        return $this->config;
+        return $this->_config;
     }
 
     /**
      * Read the file (if exists) .dephpugger.yml
+     *
+     * @return void
      */
     public function configure()
     {
         $config = $this->getConfigFromFile();
-        $this->config = array_replace_recursive($this->defaultConfig, $config);
+        $this->_config = array_replace_recursive($this->_defaultConfig, $config);
     }
 
     /**
      * Get path of file *.dephpugger.yml*
+     *
+     * @return void
      */
     public function getPathFile()
     {
@@ -58,6 +67,7 @@ class Config
 
     /**
      * Get configuration from file *.dephpugger.yml*[
+     *
      * @return array $config
      */
     public function getConfigFromFile()
@@ -76,13 +86,16 @@ class Config
     }
 
     /**
-     * Magit Method to get config as an attribute
+     * Magic Method to get config as an attribute
+     *
+     * @param string $key Name of attribute
+     *
      * @return array|null
      */
     public function __get($key)
     {
-        if (isset($this->config[$key])) {
-            return $this->config[$key];
+        if (isset($this->_config[$key])) {
+            return $this->_config[$key];
         }
 
         return null;
@@ -90,14 +103,16 @@ class Config
 
     /**
      * Change the attribute in configuration debugger
-     * @param string $key Indicates the debugger's attribute
+     *
+     * @param string $key   Indicates the debugger's attribute
      * @param string $value Indicates the new value
+     *
      * @return void
      */
     public function setNewDebuggerValue($key, $value)
     {
-        if (isset($this->config['debugger'][$key])) {
-            $this->config['debugger'][$key] = $value;
+        if (isset($this->_config['debugger'][$key])) {
+            $this->_config['debugger'][$key] = $value;
         }
     }
 }

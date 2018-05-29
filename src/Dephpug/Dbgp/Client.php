@@ -15,7 +15,7 @@ class Client
     /**
      * Transaction needed to use in dbgp protocol.
      */
-    private $transactionId = 0;
+    private $_transactionId = 0;
 
     /**
      * Object to make connection with dbgp.
@@ -27,6 +27,9 @@ class Client
      */
     protected $hasMessage = true;
 
+    /**
+     * Constructor
+     */
     public function __construct()
     {
         $this->dbgpServer = new Server();
@@ -35,8 +38,10 @@ class Client
     /**
      * Start dbgpServer client.
      *
-     * @param string $host
-     * @param int    $port
+     * @param string $host Host to DBGP server
+     * @param int    $port Port to DBGP server
+     *
+     * @return void
      */
     public function startClient($host, $port)
     {
@@ -55,11 +60,15 @@ class Client
 
     /**
      * Method to send native commands to dbgp protocol.
+     *
+     * @param string $command Command to send
+     *
+     * @return void
      */
     public function run($command)
     {
         $this->hasMessage = true;
-        $command = str_replace('{id}', $this->transactionId++, $command);
+        $command = str_replace('{id}', $this->_transactionId++, $command);
 
         $this->dbgpServer->sendCommand($command);
     }
@@ -68,17 +77,19 @@ class Client
      * Get always a new number for a transaction.
      * Auto increment.
      *
-     * @return int $transactionId
+     * @return int $_transactionId
      */
     public function getTransactionId()
     {
-        return $this->transactionId++;
+        return $this->_transactionId++;
     }
 
     /**
      * Command step_into to dbgp server.
      *
      * @example step_into -i 1
+     *
+     * @return void
      */
     public function stepInto()
     {
@@ -89,6 +100,8 @@ class Client
      * Command to step over to next line if exists.
      *
      * @example step_over -i 1
+     *
+     * @return void
      */
     public function next()
     {
@@ -100,6 +113,8 @@ class Client
      * another breakpoint.
      *
      * @example run -i 1
+     *
+     * @return void
      */
     public function continue()
     {
@@ -110,7 +125,9 @@ class Client
      * Command to send a php code to dbgp server.
      * All commands must be in base64, but the parameter doesnt need.
      *
-     * @param string $command
+     * @param string $command Command to run as eval
+     *
+     * @return void
      */
     public function eval($command)
     {
@@ -121,7 +138,11 @@ class Client
     /**
      * Command to get a variable (property in dbgp).
      *
+     * @param string $variable Variable name
+     *
      * @example property_get -i 1 -n $myVariable
+     *
+     * @return void
      */
     public function propertyGet($variable)
     {
@@ -131,7 +152,12 @@ class Client
     /**
      * Set a value to a variable.
      *
+     * @param string $varname Variable name
+     * @param any    $value   Value of variable
+     *
      * @example property_set -i 1 -n $myVariable -- MTIz
+     *
+     * @return void
      */
     public function propertySet($varname, $value)
     {

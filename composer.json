@@ -2,7 +2,8 @@
   "name": "tacnoman/dephpugger",
   "description": "Debug for php in terminal.",
 	"scripts": {
-    "test":"php vendor/bin/phpunit"
+    "test": "php vendor/bin/phpunit",
+    "lint": "php vendor/bin/phpcs src"
 	},
   "require": {
     "cboden/ratchet": "0.3.6",

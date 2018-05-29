@@ -7,21 +7,35 @@ namespace Dephpug;
  */
 class MessageParseList
 {
-    /** Reflection to get all message parses */
+    /**
+     * Reflection to get all message parses
+     */
     public $reflection;
 
-    /** Pointer to core instance */
+    /**
+     * Pointer to core instance
+     */
     public $core;
 
+    /**
+     * Constructor
+     *
+     * @param object $core Dephpugger core pointer
+     */
     public function __construct(&$core)
     {
-        $this->reflection = new PluginReflection($core, 'Dephpug\Interfaces\iMessageEvent');
+        $this->reflection = new PluginReflection(
+            $core,
+            'Dephpug\Interfaces\iMessageEvent'
+        );
         $this->core = $core;
     }
 
     /**
      * Get all plugins that match with a xml
-     * @param string $xml
+     *
+     * @param string $xml Xml from DBGP
+     *
      * @return array Indicates the list of plugins matched with xml
      */
     public function match($xml)
@@ -38,7 +52,9 @@ class MessageParseList
 
     /**
      * Run all methods in MessageParse for all plugins that match the xml
-     * @param string $xml
+     *
+     * @param string $xml Xml from DBGP
+     *
      * @return void
      */
     public function run($xml)

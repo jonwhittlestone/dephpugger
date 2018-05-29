@@ -7,20 +7,26 @@ namespace Dephpug;
  */
 class Readline
 {
-    /** File configured in config file to save the history */
-    private static $historyFile;
+    /**
+     * File configured in config file to save the history
+     */
+    private static $_historyFile;
 
-    /** Save the last command used */
-    private static $lastLine;
+    /**
+     * Save the last command used
+     */
+    private static $_lastLine;
 
     /**
      * Load the history file
+     *
      * @param string $historyFile Path to history file
+     *
      * @return void
      */
     public static function load($historyFile)
     {
-        self::$historyFile = $historyFile;
+        self::$_historyFile = $historyFile;
         if (file_exists($historyFile)) {
             readline_read_history($historyFile);
         }
@@ -28,7 +34,9 @@ class Readline
 
     /**
      * Ask to user with a default message
-     * @param string $msg
+     *
+     * @param string $msg message before command
+     *
      * @return string $line
      */
     public function scan($msg = '(dbgp) => ')
@@ -36,10 +44,10 @@ class Readline
         $line = '';
         while ($line === '') {
             $line = trim(readline($msg));
-            if ($line !== self::$lastLine) {
+            if ($line !== self::$_lastLine) {
                 readline_add_history($line);
-                readline_write_history(self::$historyFile);
-                self::$lastLine = $line;
+                readline_write_history(self::$_historyFile);
+                self::$_lastLine = $line;
             }
         }
 

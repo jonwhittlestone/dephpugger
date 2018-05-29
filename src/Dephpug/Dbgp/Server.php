@@ -18,47 +18,58 @@ class Server
     /**
      * Socket to connect xDebug.
      */
-    private static $socket;
+    private static $_socket;
 
     /**
      * Socket server to debug.
      */
-    private static $fdSocket;
+    private static $_fdSocket;
 
     /**
      * Starts a client. Set socket server to start client and close the server.
+     *
+     * @param string $host Host to dbgp protocol
+     * @param int    $port Port to dbgp protocol
+     *
+     * @return void
      */
     public function startClient($host = 'localhost', $port = 9005)
     {
-        self::$socket = socket_create(AF_INET, SOCK_STREAM, 0);
-        @socket_set_option(self::$socket, SOL_SOCKET, SO_REUSEADDR, 1);
-        @socket_bind(self::$socket, $host, $port);
-        $result = socket_listen(self::$socket);
+        self::$_socket = socket_create(AF_INET, SOCK_STREAM, 0);
+        @socket_set_option(self::$_socket, SOL_SOCKET, SO_REUSEADDR, 1);
+        @socket_bind(self::$_socket, $host, $port);
+        $result = socket_listen(self::$_socket);
         assert($result);
 
         Output::print("<fg=blue> --- Listening on port {$port} ---</>\n");
         $this->eventConnectXdebugServer();
-        socket_close(self::$socket);
+        socket_close(self::$_socket);
     }
 
     /**
      * Close the client socket.
+     *
+     * @return void
      */
     public function closeClient()
     {
-        socket_close(self::$fdSocket);
+        socket_close(self::$_fdSocket);
     }
 
     /**
      * Remote commands are async. Method to wait xDebug response.
+     *
+     * @return void|boolean
      */
     public function eventConnectXdebugServer()
     {
-        self::$fdSocket = null;
+        self::$_fdSocket = null;
         while (true) {
-            self::$fdSocket = socket_accept(self::$socket);
-            if (self::$fdSocket !== false) {
-                Output::print('Connected to <fg=yellow;options=bold>XDebug server</>!');
+            self::$_fdSocket = socket_accept(self::$_socket);
+            if (self::$_fdSocket !== false) {
+                Output::print(
+                    'Connected to <fg=yellow;options=bold>XDebug server</>!'
+                );
                 return true;
             }
         }
@@ -69,12 +80,14 @@ class Server
      * Exits process on failure.
      *
      * @param string $command Command to send to DBGP
+     *
+     * @return boolean
      */
     public function sendCommand($command)
     {
-        $result = @socket_write(self::$fdSocket, "$command\0");
+        $result = @socket_write(self::$_fdSocket, "$command\0");
         if ($result === false) {
-            $errorSocket = socket_last_error(self::$fdSocket);
+            $errorSocket = socket_last_error(self::$_fdSocket);
 
             $error = 'Client socket error: '.socket_strerror($errorSocket);
             throw new ExitProgram($error, 1);
@@ -84,6 +97,8 @@ class Server
 
     /**
      * Wait the response and set in static property.
+     *
+     * @return string
      */
     public function getResponse()
     {
@@ -92,7 +107,7 @@ class Server
 
         do {
             $buffer = '';
-            $result = @socket_recv(self::$fdSocket, $buffer, 1024, 0);
+            $result = @socket_recv(self::$_fdSocket, $buffer, 1024, 0);
             if ($result === false) {
                 throw new ExitProgram('Client socket error', 1);
             }
