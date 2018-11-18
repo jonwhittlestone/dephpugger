@@ -7,7 +7,8 @@
   "require": {
     "cboden/ratchet": "0.3.6",
     "symfony/console": "^4.1.7",
-    "symfony/yaml": "^3.2"
+    "symfony/yaml": "^3.2 ",
+    "symfony/http-foundation": "^2.2" 
   },
   "require-dev": {
     "squizlabs/php_codesniffer": "2.*",
